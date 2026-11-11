@@ -1,0 +1,70 @@
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Titanic Dataset
+data = {
+    "Age": [22, 38, 26, 35, 28, 2, 30, 25, 40, 18, 45, 32, 19, 50, 27],
+    "Fare": [7.25, 71.28, 7.92, 53.10, 8.05, 21.07, 13, 7.90,
+             27.72, 10.50, 51.86, 15.50, 8.03, 30, 12.50],
+    "Pclass": [3, 1, 3, 1, 3, 2, 2, 3, 1, 3, 1, 2, 3, 1, 2],
+    "Survived": [0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1],
+    "Gender": ["Male", "Female", "Female", "Female", "Male",
+               "Female", "Male", "Male", "Female", "Male",
+               "Female", "Female", "Male", "Female", "Male"]
+}
+
+df = pd.DataFrame(data)
+
+# Create one-page dashboard
+fig, ax = plt.subplots(2, 3, figsize=(15, 10))
+
+fig.suptitle("TITANIC DATASET - EDA ANALYSIS",
+             fontsize=18, fontweight="bold")
+
+# 1. Histogram
+ax[0, 0].hist(df["Age"], bins=6, edgecolor="black")
+ax[0, 0].set_title("1. Age Distribution")
+ax[0, 0].set_xlabel("Age")
+ax[0, 0].set_ylabel("Frequency")
+
+# 2. Boxplot
+sns.boxplot(x=df["Fare"], ax=ax[0, 1])
+ax[0, 1].set_title("2. Fare Boxplot")
+
+# 3. Scatterplot
+sns.scatterplot(data=df, x="Age", y="Fare",
+                hue="Survived", ax=ax[0, 2])
+ax[0, 2].set_title("3. Age vs Fare")
+
+# 4. Heatmap
+corr = df[["Age", "Fare", "Pclass", "Survived"]].corr()
+sns.heatmap(corr, annot=True, cmap="coolwarm",
+            fmt=".2f", ax=ax[1, 0])
+ax[1, 0].set_title("4. Correlation Heatmap")
+
+# 5. Survival by Gender
+sns.barplot(data=df, x="Gender", y="Survived",
+            ax=ax[1, 1])
+ax[1, 1].set_title("5. Survival by Gender")
+ax[1, 1].set_ylabel("Survival Rate")
+
+# 6. Survival by Passenger Class
+sns.barplot(data=df, x="Pclass", y="Survived",
+            ax=ax[1, 2])
+ax[1, 2].set_title("6. Survival by Class")
+ax[1, 2].set_ylabel("Survival Rate")
+
+# Adjust layout
+plt.tight_layout(rect=[0, 0, 1, 0.94])
+
+# Save one-page dashboard
+plt.savefig("Task5_EDA_Graphs.png", dpi=200,
+            bbox_inches="tight")
+
+plt.show()
+
+print("EDA GRAPHICAL DASHBOARD CREATED SUCCESSFULLY!")
+print("Total Graphs: 6")
+print("Image Saved: Task5_EDA_Graphs.png")
